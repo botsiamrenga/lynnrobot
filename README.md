@@ -12,9 +12,10 @@
 </p>
 
 <p align="center">
-  <img src="https://media.giphy.com/media/Qv9p77hBf48DutDzvr/giphy.gif">
+  <https://telegra.ph/file/770c41ad0f7bb7c7ad821.jpg">
 </p>
-
+                                                     
+#Can be found on telegram as [Lynn](https://t.me/DikaMs_bot)
 ## How To Host
 The easiest way to deploy this Bot
 <p align="center"><a href="https://heroku.com/deploy?template=https://github.com/didikteatochhawng/LynnRoBot"> <img src="https://img.shields.io/badge/Deploy%20To%20Heroku-black?style=for-the-badge&logo=heroku" width="220" height="38.45"/></a></p>
