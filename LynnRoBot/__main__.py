@@ -75,7 +75,8 @@ def get_readable_time(seconds: int) -> str:
 
 PM_START_TEXT = """
 `Hello My name is` *Lynn*
-`I'm here to help you manage your groups! Hit` *📚Commands* `button below to find out more about how to use me to my full potential.` 
+`I'm here to help you manage your groups! Hit` *📚Commands* `button below to find out more about how to use me to my full potential.`
+`Click *Tutorial* if you want to know how to use me like a pro.`
 """
 
 buttons = [
@@ -89,7 +90,7 @@ buttons = [
     ],
     [
         InlineKeyboardButton(
-            text="💾 SOURCE", callback_data="source_"),
+            "text="📖 Tutorial", url="https://t.me/lynnsupportgroup/26""),
         InlineKeyboardButton(
             text="💬 SUPPORT GROUP", url="https://t.me/puituflynn"
         ),
