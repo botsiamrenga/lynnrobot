@@ -74,9 +74,10 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-`Hello My name is` *Lynn*
-`I'm here to help you manage your groups! Hit` *📚Commands* `button below to find out more about how to use me to my full potential.`
-`Click *Tutorial* if you want to know how to use me like a pro.`
+『Hello Dear🥰, I am [lynn chawngthu](https://telegra.ph/file/770c41ad0f7bb7c7ad821.jpg), 』
+`I'm here to help you manage your groups! Hit` *📚 Commands* `button below to find out more about how to use me to my full potential.`
+
+Click` *📖 Tutorial* `if you want to know how to use me like a pro.`
 """
 
 buttons = [
@@ -99,7 +100,12 @@ buttons = [
 
 
 HELP_STRINGS = """
-*『HELP BUTTONS HERE』*"""
+*『HELP BUTTONS HERE』*
+*❍ Kan Sakruang Mizoram Tan❍*
+"""
+
+
+LYNN_IMG  = "https://telegra.ph/Lynn-02-26-2.jpg"
 
 
 DONATE_STRING = """No need.. I'm rich"""
