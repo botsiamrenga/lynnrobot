@@ -90,7 +90,7 @@ buttons = [
     ],
     [
         InlineKeyboardButton(
-            "text="📖 Tutorial", url="https://t.me/lynnsupportgroup/26""),
+            text="📖 Tutorial", url="https://t.me/lynnsupportgroup/26""),
         InlineKeyboardButton(
             text="💬 SUPPORT GROUP", url="https://t.me/puituflynn"
         ),
