@@ -368,7 +368,7 @@ def Lynn_about_callback(update: Update, context: CallbackContext):
                  ❍ I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
                  ❍ I check for admins' permissions before executing any command and more stuffs
                  \n_Lynn licensed under the GNU General Public License v3.0_
-                 Here is the [💾Repository](https://github.com/lynntelo/lynn2.0).
+                 Here is the [💾Repository](https://github.com/lynntelo/LynnRoBot).
                  If you have any question about Lynn, let us know at @puituflynn.""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
@@ -396,7 +396,7 @@ def Source_about_callback(update: Update, context: CallbackContext):
     if query.data == "source_":
         query.message.edit_text(
             text=""" Hi..🤗 I'm *Lynn*
-                 \nHere is the [Source Code](https://github.com/lynntelo/lynn2.0) .""",
+                 \nHere is the [Source Code](https://github.com/lynntelo/LynnRoBot) .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=False,
             reply_markup=InlineKeyboardMarkup(
