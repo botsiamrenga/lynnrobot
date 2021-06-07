@@ -141,4 +141,3 @@ def __load_flood_settings():
 
 
 __load_flood_settings()
-© 2021 GitHub, Inc.
