@@ -1,3 +1,5 @@
+![Lynn](https://telegra.ph/file/770c41ad0f7bb7c7ad821.jpg)
+# Lynn RoBot
 <p align="center">
     <a href="https://github.com/didikteatochhawng/LynnRoBot/network"><img src="https://img.shields.io/github/forks/didikteatochhawng/LynnRoBot?style=for-the-badge" alt="GitHub forks" /></a>
     <a href="https://github.com/didikteatochhawng/LynnRoBot/stargazers"><img src="https://img.shields.io/github/stars/didikteatochhawng/LynnRoBot?style=for-the-badge" alt="GitHub stars" /></a>
