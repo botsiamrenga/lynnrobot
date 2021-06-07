@@ -74,10 +74,15 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-『Hello Dear🥰, I am [lynn chawngthu](https://telegra.ph/file/770c41ad0f7bb7c7ad821.jpg), 』
-`I'm here to help you manage your groups! Hit` *📚 Commands* `button below to find out more about how to use me to my full potential.`
+『Chibai le hmelthate🥰, Kei hi [lynn chawngthu](https://telegra.ph/file/770c41ad0f7bb7c7ad821.jpg) ka ni a, 』
 
-Click` *📖 Tutorial* `if you want to know how to use me like a pro.`
+I group enkawl pui tur che a duhtaka [Didiktea](https://t.me/Didiktea) siam ka ni!
+ 
+`A hnuai a` *📚 Commands* `button khu hmet la ka thil tihtheih te i hre dawn nia.
+
+Anihloh pawh in` *📖 Tutorial* `tih khu hmet la,min hman dan tur te i hre thei bawk ang.`
+
+*『Thildang tihtheih tamtak kala nei a, i group ah min add in min han hmang chhin la i hre mai ang.』*
 """
 
 buttons = [
@@ -100,8 +105,10 @@ buttons = [
 
 
 HELP_STRINGS = """
-*『HELP BUTTONS HERE』*
-*❍ Kan Sakruang Mizoram Tan❍*
+*『HELP BUTTONS HERE』 *
+☞︎︎︎ _A hnuai a button ho khu ka thil tih theih te chu an ni e._ 
+☞︎︎︎ _Han hmet chhin la a command dan tur te thleng in a inziak vek e._ 
+   *❍ Kan Sakruang Mizoram Tan❍*
 """
 
 
