@@ -74,21 +74,14 @@ def get_readable_time(seconds: int) -> str:
 
 
 PM_START_TEXT = """
-『Chibai le hmelthate🥰, Kei hi [lynn chawngthu](https://telegra.ph/file/770c41ad0f7bb7c7ad821.jpg) ka ni a, 』
-
-I group enkawl pui tur che a duhtaka [Didiktea](https://t.me/Didiktea) siam ka ni!
- 
-`A hnuai a` *📚 Commands* `button khu hmet la ka thil tihtheih te i hre dawn nia.
-
-Anihloh pawh in` *📖 Tutorial* `tih khu hmet la,min hman dan tur te i hre thei bawk ang.`
-
-*『Thildang tihtheih tamtak kala nei a, i group ah min add in min han hmang chhin la i hre mai ang.』*
+`Hellow My name is` *Lynn*
+`I'm here to help you manage your groups! Hit` *📚Commands* `button below to find out more about how to use me to my full potential.` 
 """
 
 buttons = [
     [
         InlineKeyboardButton(
-            text="➕️ ADD 𝕃𝕪𝕟𝕟 TO YOUR GROUP 🔘", url="t.me/DikaMs_bot?startgroup=true"),
+            text="➕️ ADD Lynn TO YOUR GROUP ➕️", url="t.me/MashaRoBot?startgroup=true"),
     ],
     [
         InlineKeyboardButton(text="ℹ️ ABOUT", callback_data="lynn_"),
@@ -96,26 +89,19 @@ buttons = [
     ],
     [
         InlineKeyboardButton(
-            text="💬 GROUP", url="https://t.me/puituflynn"),
+            text="💾 SOURCE", callback_data="source_"),
         InlineKeyboardButton(
-            text="📖 Tutorial", url="https://t.me/lynnsupportgroup/26"
+            text="👥 SUPPORT", url="https://t.me/wastebots"
         ),
     ],
 ]
 
 
 HELP_STRINGS = """
-*『HELP BUTTONS HERE』 *
-☞︎︎︎ _A hnuai a button ho khu ka thil tih theih te chu an ni e._ 
-☞︎︎︎ _Han hmet chhin la a command dan tur te thleng in a inziak vek e._ 
-   *❍ Kan Sakruang Mizoram Tan❍*
-"""
+*『HELP BUTTONS HERE』*"""
 
 
-LYNN_IMG  = "https://telegra.ph/Lynn-02-26-2.jpg"
-
-
-DONATE_STRING = """Donate duhna rilru i put avangin ka lawm e.. Malsawmin awm rawh"""
+DONATE_STRING = """No need.. I'm rich"""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -200,7 +186,7 @@ def start(update: Update, context: CallbackContext):
                     update.effective_chat.id,
                     HELPABLE[mod].__help__,
                     InlineKeyboardMarkup(
-                        [[InlineKeyboardButton(text="🏃‍♀️ BACK", callback_data="help_back")]]
+                        [[InlineKeyboardButton(text="⬅️ BACK", callback_data="help_back")]]
                     ),
                 )
 
@@ -314,7 +300,7 @@ def help_button(update, context):
                 parse_mode=ParseMode.MARKDOWN,
                 disable_web_page_preview=True,
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(text="「🏃‍♀️ GO BACK 」", callback_data="help_back")]]
+                    [[InlineKeyboardButton(text="「 GO BACK 」", callback_data="help_back")]]
                 ),
             )
 
@@ -360,28 +346,22 @@ def Lynn_about_callback(update: Update, context: CallbackContext):
     query = update.callback_query
     if query.data == "lynn_":
         query.message.edit_text(
-            text=""" ➪ Keihi *𝕃𝕪𝕟𝕟* ka ni a, a hnuai ami te khu group enkawl tu a min hman chuan ka ti thei e.
-
-☞  Bot chungchang i hriat chian duh chuan :- [HEI HI HMET RAWH](https://telegra.ph/Lynn-Bot-tutorial-05-18)
-
-☞︎︎︎ *Members thar te ka lo lawmlut thei.*
-
-☞︎︎︎ *Memebers te group a nawilo turin ka khuahkhirh thei.*
-
-☞︎︎︎ *Hla Download nan min hmang thei.* 
-   
-☞︎︎︎ *Google a thil search tu atan min hmang thei.*
-
-☞︎︎︎ Harsatna i tawh hun a i buai loh nan [MIZO ANDROID USERS](https://t.me/puituflynn) hi lo join ngei ang che. 
-    \n_Bot chungchang bik a zawhna i neih chuan a chung a Group khi Join la ilo zawt thin dawn nia._
-    \n_Thildang Android kaihhnawih lam pawh zawh theih reng ani bawk e._
-    \n_Nangma puala Bot i siam ve duh anih chuan @lynnsupportgroup hi ilo join dawn nia._""",
+            text=""" ℹ️ I'm *Lynn*, a powerful group management bot built to help you manage your group easily.
+                 ❍ I can restrict users.
+                 ❍ I can greet users with customizable welcome messages and even set a group's rules.
+                 ❍ I have an advanced anti-flood system.
+                 ❍ I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.
+                 ❍ I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
+                 ❍ I check for admins' permissions before executing any command and more stuffs
+                 \n_Lynn licensed under the GNU General Public License v3.0_
+                 Here is the [💾Repository](https://github.com/Mr-Dark-Prince/MashaRoBot).
+                 If you have any question about Masha, let us know at @WasteBots.""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=True,
             reply_markup=InlineKeyboardMarkup(
                 [
                  [
-                    InlineKeyboardButton(text="🏃‍♀️Back", callback_data="lynn_back")
+                    InlineKeyboardButton(text="Back", callback_data="lynn_back")
                  ]
                 ]
             ),
@@ -401,7 +381,7 @@ def Source_about_callback(update: Update, context: CallbackContext):
     query = update.callback_query
     if query.data == "source_":
         query.message.edit_text(
-            text=""" Hi..🤗 I'm *LYNN*
+            text=""" Hi..🤗 I'm *Lynn*
                  \nHere is the [Source Code](https://github.com/Mr-Dark-Prince/MashaRoBot) .""",
             parse_mode=ParseMode.MARKDOWN,
             disable_web_page_preview=False,
@@ -697,7 +677,7 @@ def main():
 
     if SUPPORT_CHAT is not None and isinstance(SUPPORT_CHAT, str):
         try:
-            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "Ka online leh thei chiah e 💗")
+            dispatcher.bot.sendMessage(f"@{SUPPORT_CHAT}", "Yes I'm alive 😹")
         except Unauthorized:
             LOGGER.warning(
                 "Bot isnt able to send message to support_chat, go and check!"
