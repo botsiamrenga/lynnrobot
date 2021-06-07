@@ -81,17 +81,17 @@ PM_START_TEXT = """
 buttons = [
     [
         InlineKeyboardButton(
-            text="➕️ ADD Lynn TO YOUR GROUP 🔘", url="t.me/MashaRoBot?startgroup=true"),
+            text="➕️ ADD Lynn TO YOUR GROUP 🔘", url="t.me/DikaMs_bot?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="ℹ️ ABOUT", callback_data="lynn_"),
+        InlineKeyboardButton(text="ℹ️ ABOUT ME", callback_data="lynn_"),
         InlineKeyboardButton(text="📚 COMMANDS", callback_data="help_back"),
     ],
     [
         InlineKeyboardButton(
             text="💾 SOURCE", callback_data="source_"),
         InlineKeyboardButton(
-            text="👥 SUPPORT", url="https://t.me/wastebots"
+            text="💬 SUPPORT GROUP", url="https://t.me/puituflynn"
         ),
     ],
 ]
