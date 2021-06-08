@@ -9,7 +9,7 @@ import json
 from urllib.request import urlopen
 
 
-def covindia(LynnRoBot: Bot, update: Update):
+def covindia(bot: Bot, update: Update):
     message = update.effective_message
     state = ''
     confirmed = 0
