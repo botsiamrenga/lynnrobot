@@ -54,3 +54,4 @@ pytz
 send
 tswift
 jikanpy
+motor
