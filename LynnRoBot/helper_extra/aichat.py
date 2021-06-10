@@ -1,4 +1,4 @@
-from LynnRobot.mongo import client as db_x
+from LynnRoBot.mongo import client as db_x
 
 lydia = db_x["CAHTBOT"]
 
