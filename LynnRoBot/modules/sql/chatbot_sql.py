@@ -1,6 +1,6 @@
 import threading
 
-from LynnRoBot.modules.sql import BASE, SESSION
+from LynnRobot.modules.sql import BASE, SESSION
 from sqlalchemy import Column, String
 
 
