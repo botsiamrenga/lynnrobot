@@ -367,6 +367,7 @@ def Lynn_about_callback(update: Update, context: CallbackContext):
  ❍ I can warn users until they reach max warns, with each predefined actions such as ban, mute, kick, etc.
  ❍ I have a note keeping system, blacklists, and even predetermined replies on certain keywords.
  ❍ I check for admins' permissions before executing any command and more stuffs
+ \n❍ Assistant @Meshadows.
       \n_Lynn licensed under the GNU General Public License v3.0_
          Here is the [💾Repository](https://github.com/lynntelo/LynnRoBot).
     If you have any question about Lynn, let us know at @puituflynn.""",
