@@ -88,7 +88,7 @@ async def hmm(_, message):
         )
 
 
-@layla.on_message(
+@lynn.on_message(
     filters.text
     & filters.reply
     & ~filters.bot
