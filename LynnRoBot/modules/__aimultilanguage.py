@@ -11,10 +11,10 @@ import aiohttp
 from google_trans_new import google_translator
 from pyrogram import filters
 
-from LynnRobot import BOT_ID
-from LynnRobot.helper_extra.aichat import add_chat, get_session, remove_chat
-from LynnRobot.pyrogramee.pluginshelper import admins_only, edit_or_reply
-from LynnRobot import pbot as lynn
+from LynnRoBot import BOT_ID
+from LynnRoBot.helper_extra.aichat import add_chat, get_session, remove_chat
+from LynnRoBot.pyrogramee.pluginshelper import admins_only, edit_or_reply
+from LynnRoBot import pbot as lynn
 
 translator = google_translator()
 import requests
