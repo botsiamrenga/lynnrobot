@@ -58,3 +58,4 @@ motor
 envparse
 lyricsgenius
 aiofiles
+youtube_search_python
