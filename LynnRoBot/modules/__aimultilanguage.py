@@ -14,7 +14,7 @@ from pyrogram import filters
 from LynnRobot import BOT_ID
 from LynnRobot.helper_extra.aichat import add_chat, get_session, remove_chat
 from LynnRobot.pyrogramee.pluginshelper import admins_only, edit_or_reply
-from LynnRobot import pbot as layla
+from LynnRobot import pbot as lynn
 
 translator = google_translator()
 import requests
