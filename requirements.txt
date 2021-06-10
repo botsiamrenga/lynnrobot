@@ -56,3 +56,4 @@ tswift
 jikanpy
 motor
 envparse
+lyricsgenius
