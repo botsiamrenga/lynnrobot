@@ -1,138 +1,365 @@
-# credits @RoseLoverX @Didiktea
-# ported to Lynn @Didiktea
-from LynnRoBot import OWNER_ID, BOT_ID
-from LynnRoBot import telethn as tbot
-import LynnRoBot.modules.sql.aihelp_sql as sql
-import LynnRoBot.modules.sql.chatbot_sql as ly
+import re
+
+import emoji
+
+IBM_WATSON_CRED_URL = "https://api.us-south.speech-to-text.watson.cloud.ibm.com/instances/bd6b59ba-3134-4dd4-aff2-49a79641ea15"
+IBM_WATSON_CRED_PASSWORD = "UQ1MtTzZhEsMGK094klnfa-7y_4MCpJY1yhd52MXOo3Y"
+url = "https://acobot-brainshop-ai-v1.p.rapidapi.com/get"
+import re
+
+import aiohttp
 from google_trans_new import google_translator
+from pyrogram import filters
+
+from LynnRobot import BOT_ID
+from LynnRobot.helper_extra.aichat import add_chat, get_session, remove_chat
+from LynnRobot.pyrogramee.pluginshelper import admins_only, edit_or_reply
+from LynnRobot import pbot as layla
+
 translator = google_translator()
 import requests
 
 
-from telethon import events
-from LynnRoBot.events import register
-
-string = (
-  "I belong To Lalbiakdika!",
-  "Im Fairly Yound And Was Made by Lalbiakdika!",
-)
+def extract_emojis(s):
+    return "".join(c for c in s if c in emoji.UNICODE_EMOJI)
 
 
-async def can_change_info(message):
-    result = await tbot(
-        functions.channels.GetParticipantRequest(
-            channel=message.chat_id,
-            user_id=message.sender_id,
-        )
-    )
-    p = result.participant
-    return isinstance(p, types.ChannelParticipantCreator) or (
-        isinstance(p, types.ChannelParticipantAdmin) and p.admin_rights.change_info
-    )
-
-
-@register(pattern="^/yeschat$")
-async def _(event):
-    if event.is_group:
-        if not event.sender_id == OWNER_ID:
-           if not await can_change_info(message=event):
-              return
-    else:
-        return
-    chat = event.chat
-    is_chat = sql.is_chat(chat.id)
-    k = ly.is_chat(chat.id)
-    if k:
-        ly.rem_chat(chat.id)
-    if not is_chat:
-        ses_id = 'null'
-        expires = 'null'
-        sql.set_ses(chat.id, ses_id, expires)
-        await event.reply("AI successfully enabled for this chat!")
-        return
-    await event.reply("AI Bot is already enabled for this chat!")
-    return ""
-
-
-@register(pattern="^/nochat$")
-async def _(event):
-    if event.is_group:
-        if not event.sender_id == OWNER_ID:
-          return
-    else:
-        return
-    chat = event.chat
-    is_chat = sql.is_chat(chat.id)
-    if not is_chat:
-        await event.reply("AI isn't enabled here in the first place!")
-        return
-    sql.rem_chat(chat.id)
-    await event.reply("AI Bot disabled successfully!")
-
-
-@tbot.on(events.NewMessage(pattern=None))
-async def _(event):
-  if event.is_group:
-        pass
-  else:
-        return
-  prof = str(event.text)
-  
-  if not "Lynn" in prof:
-    if not "Lynn" in prof:
-      reply_msg = await event.get_reply_message()
-      if not reply_msg.sender_id == BOT_ID:
-           return
-  chat = event.chat
-  msg = prof
-  is_chat = sql.is_chat(chat.id)
-  if not is_chat:
-        return
-  if msg.startswith("/") or msg.startswith("@"):
-    return
-  lan = translator.detect(msg)
-  if not "en" in lan and not lan == "":
-     test = translator.translate(msg, lang_tgt="en")
-  else:
-     test = msg
-  
-  url = "https://iamai.p.rapidapi.com/ask"
-  r = ('\n    \"consent\": true,\n    \"ip\": \"::1\",\n    \"question\": \"{}\"\n').format(test)
-  k = f"({r})"
-  new_string = k.replace("(", "{")
-  lol = new_string.replace(")","}")
-  payload = lol
-  headers = {
-    'content-type': "application/json",
-    'x-forwarded-for': "<user's ip>",
-    'x-rapidapi-key': "33b8b1a671msh1c579ad878d8881p173811jsn6e5d3337e4fc",
-    'x-rapidapi-host': "iamai.p.rapidapi.com"
-    }
-
-  response = requests.request("POST", url, data=payload, headers=headers)
-  lodu = response.json()
-  result = (lodu['message']['text'])
-  if "Thergiakis" in result:
-   pro = random.choice(string)
-   try:
-      async with tbot.action(event.chat_id, 'typing'):
-           await event.reply(pro)
-   except CFError as e:
-           print(e)
-  elif "Ann" in result:
-   pro = "Yeah, My name is Lynn"
-   try:
-      async with tbot.action(event.chat_id, 'typing'):
-           await event.reply(pro)
-   except CFError as e:
-           print(e)
-  else:
-    if not "en" in lan and not lan == "":
-      finale = translator.translate(result, lang_tgt=lan[0])
-    else:
-      finale = result
+async def fetch(url):
     try:
-      async with tbot.action(event.chat_id, 'typing'):
-           await event.reply(finale)
-    except CFError as e:
-           await event.reply(lodu)
+        async with aiohttp.Timeout(10.0):
+            async with aiohttp.ClientSession() as session:
+                async with session.get(url) as resp:
+                    try:
+                        data = await resp.json()
+                    except:
+                        data = await resp.text()
+            return data
+    except:
+        print("AI response Timeout")
+        return
+
+
+lynn_chats = []
+en_chats = []
+
+@lynn.on_message(
+    filters.command("chatbot") & ~filters.edited & ~filters.bot & ~filters.private
+)
+@admins_only
+async def hmm(_, message):
+    global layla_chats
+    if len(message.command) != 2:
+        await message.reply_text(
+            "I only recognize `/chatbot on` and /chatbot `off only`"
+        )
+        message.continue_propagation()
+    status = message.text.split(None, 1)[1]
+    chat_id = message.chat.id
+    if status == "ON" or status == "on" or status == "On":
+        lel = await edit_or_reply(message, "`Processing...`")
+        lol = add_chat(int(message.chat.id))
+        if not lol:
+            await lel.edit("lynn AI Already Activated In This Chat")
+            return
+        await lel.edit(
+            f"lynn AI Successfully Added For Users In The Chat {message.chat.id}"
+        )
+
+    elif status == "OFF" or status == "off" or status == "Off":
+        lel = await edit_or_reply(message, "`Processing...`")
+        Escobar = remove_chat(int(message.chat.id))
+        if not Escobar:
+            await lel.edit("Lynn AI Was Not Activated In This Chat")
+            return
+        await lel.edit(
+            f"lynn AI Successfully Deactivated For Users In The Chat {message.chat.id}"
+        )
+
+    elif status == "EN" or status == "en" or status == "english":
+        if not chat_id in en_chats:
+            en_chats.append(chat_id)
+            await message.reply_text("English AI chat Enabled!")
+            return
+        await message.reply_text("AI Chat Is Already Disabled.")
+        message.continue_propagation()
+    else:
+        await message.reply_text(
+            "I only recognize `/chatbot on` and /chatbot `off only`"
+        )
+
+
+@layla.on_message(
+    filters.text
+    & filters.reply
+    & ~filters.bot
+    & ~filters.edited
+    & ~filters.via_bot
+    & ~filters.forwarded,
+    group=2,
+)
+async def hmm(client, message):
+    if not get_session(int(message.chat.id)):
+        return
+    if not message.reply_to_message:
+        return
+    try:
+        senderr = message.reply_to_message.from_user.id
+    except:
+        return
+    if senderr != BOT_ID:
+        return
+    msg = message.text
+    chat_id = message.chat.id
+    if msg.startswith("/") or msg.startswith("@"):
+        message.continue_propagation()
+    if chat_id in en_chats:
+        test = msg
+        test = test.replace("lynn", "Aco")
+        test = test.replace("lynn", "Aco")
+        URL = "https://api.affiliateplus.xyz/api/chatbot?message=hi&botname=@LaylaRobot&ownername=@HEROGAMERS1"
+
+        try:
+            r = requests.request("GET", url=URL)
+        except:
+            return
+
+        try:
+            result = r.json()
+        except:
+            return
+
+        pro = result["message"]
+        try:
+            await lynn.send_chat_action(message.chat.id, "typing")
+            await message.reply_text(pro)
+        except CFError:
+            return
+
+    else:
+        u = msg.split()
+        emj = extract_emojis(msg)
+        msg = msg.replace(emj, "")
+        if (
+            [(k) for k in u if k.startswith("@")]
+            and [(k) for k in u if k.startswith("#")]
+            and [(k) for k in u if k.startswith("/")]
+            and re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []
+        ):
+
+            h = " ".join(filter(lambda x: x[0] != "@", u))
+            km = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", h)
+            tm = km.split()
+            jm = " ".join(filter(lambda x: x[0] != "#", tm))
+            hm = jm.split()
+            rm = " ".join(filter(lambda x: x[0] != "/", hm))
+        elif [(k) for k in u if k.startswith("@")]:
+
+            rm = " ".join(filter(lambda x: x[0] != "@", u))
+        elif [(k) for k in u if k.startswith("#")]:
+            rm = " ".join(filter(lambda x: x[0] != "#", u))
+        elif [(k) for k in u if k.startswith("/")]:
+            rm = " ".join(filter(lambda x: x[0] != "/", u))
+        elif re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []:
+            rm = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", msg)
+        else:
+            rm = msg
+            # print (rm)
+        try:
+            lan = translator.detect(rm)
+        except:
+            return
+        test = rm
+        if not "en" in lan and not lan == "":
+            try:
+                test = translator.translate(test, lang_tgt="en")
+            except:
+                return
+        # test = emoji.demojize(test.strip())
+
+        # Kang with the credits bitches @InukaASiTH
+        test = test.replace("layla", "Aco")
+        test = test.replace("layla", "Aco")
+        URL = f"https://api.affiliateplus.xyz/api/chatbot?message={test}&botname=@LynnRobot&ownername=@HEROGAMERS1"
+        try:
+            r = requests.request("GET", url=URL)
+        except:
+            return
+
+        try:
+            result = r.json()
+        except:
+            return
+        pro = result["message"]
+        if not "en" in lan and not lan == "":
+            try:
+                pro = translator.translate(pro, lang_tgt=lan[0])
+            except:
+                return
+        try:
+            await lynn.send_chat_action(message.chat.id, "typing")
+            await message.reply_text(pro)
+        except CFError:
+            return
+
+
+@lynn.on_message(
+    filters.text & filters.private & ~filters.edited & filters.reply & ~filters.bot
+)
+async def inuka(client, message):
+    msg = message.text
+    if msg.startswith("/") or msg.startswith("@"):
+        message.continue_propagation()
+    u = msg.split()
+    emj = extract_emojis(msg)
+    msg = msg.replace(emj, "")
+    if (
+        [(k) for k in u if k.startswith("@")]
+        and [(k) for k in u if k.startswith("#")]
+        and [(k) for k in u if k.startswith("/")]
+        and re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []
+    ):
+
+        h = " ".join(filter(lambda x: x[0] != "@", u))
+        km = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", h)
+        tm = km.split()
+        jm = " ".join(filter(lambda x: x[0] != "#", tm))
+        hm = jm.split()
+        rm = " ".join(filter(lambda x: x[0] != "/", hm))
+    elif [(k) for k in u if k.startswith("@")]:
+
+        rm = " ".join(filter(lambda x: x[0] != "@", u))
+    elif [(k) for k in u if k.startswith("#")]:
+        rm = " ".join(filter(lambda x: x[0] != "#", u))
+    elif [(k) for k in u if k.startswith("/")]:
+        rm = " ".join(filter(lambda x: x[0] != "/", u))
+    elif re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []:
+        rm = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", msg)
+    else:
+        rm = msg
+        # print (rm)
+    try:
+        lan = translator.detect(rm)
+    except:
+        return
+    test = rm
+    if not "en" in lan and not lan == "":
+        try:
+            test = translator.translate(test, lang_tgt="en")
+        except:
+            return
+
+    # test = emoji.demojize(test.strip())
+
+    # Kang with the credits bitches @InukaASiTH
+    test = test.replace("lynn", "Aco")
+    test = test.replace("lynn", "Aco")
+    URL = f"https://api.affiliateplus.xyz/api/chatbot?message={test}&botname=@LynnRobot&ownername=@HEROGAMERS1"
+    try:
+        r = requests.request("GET", url=URL)
+    except:
+        return
+
+    try:
+        result = r.json()
+    except:
+        return
+
+    pro = result["message"]
+    if not "en" in lan and not lan == "":
+        pro = translator.translate(pro, lang_tgt=lan[0])
+    try:
+        await lynn.send_chat_action(message.chat.id, "typing")
+        await message.reply_text(pro)
+    except CFError:
+        return
+
+
+@lynn.on_message(
+    filters.regex("lynn|lynn|Lynn|Lynn|Lynn")
+    & ~filters.bot
+    & ~filters.via_bot
+    & ~filters.forwarded
+    & ~filters.reply
+    & ~filters.channel
+    & ~filters.edited
+)
+async def inuka(client, message):
+    msg = message.text
+    if msg.startswith("/") or msg.startswith("@"):
+        message.continue_propagation()
+    u = msg.split()
+    emj = extract_emojis(msg)
+    msg = msg.replace(emj, "")
+    if (
+        [(k) for k in u if k.startswith("@")]
+        and [(k) for k in u if k.startswith("#")]
+        and [(k) for k in u if k.startswith("/")]
+        and re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []
+    ):
+
+        h = " ".join(filter(lambda x: x[0] != "@", u))
+        km = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", h)
+        tm = km.split()
+        jm = " ".join(filter(lambda x: x[0] != "#", tm))
+        hm = jm.split()
+        rm = " ".join(filter(lambda x: x[0] != "/", hm))
+    elif [(k) for k in u if k.startswith("@")]:
+
+        rm = " ".join(filter(lambda x: x[0] != "@", u))
+    elif [(k) for k in u if k.startswith("#")]:
+        rm = " ".join(filter(lambda x: x[0] != "#", u))
+    elif [(k) for k in u if k.startswith("/")]:
+        rm = " ".join(filter(lambda x: x[0] != "/", u))
+    elif re.findall(r"\[([^]]+)]\(\s*([^)]+)\s*\)", msg) != []:
+        rm = re.sub(r"\[([^]]+)]\(\s*([^)]+)\s*\)", r"", msg)
+    else:
+        rm = msg
+        # print (rm)
+    try:
+        lan = translator.detect(rm)
+    except:
+        return
+    test = rm
+    if not "en" in lan and not lan == "":
+        try:
+            test = translator.translate(test, lang_tgt="en")
+        except:
+            return
+
+    # test = emoji.demojize(test.strip())
+
+    # Kang with the credits bitches @InukaASiTH
+    test = test.replace("lynn", "Aco")
+    test = test.replace("lynn", "Aco")
+    URL = f"https://api.affiliateplus.xyz/api/chatbot?message={test}&botname=@LynnRoBot&ownername=@A_viyu"
+    try:
+        r = requests.request("GET", url=URL)
+    except:
+        return
+
+    try:
+        result = r.json()
+    except:
+        return
+    pro = result["message"]
+    if not "en" in lan and not lan == "":
+        try:
+            pro = translator.translate(pro, lang_tgt=lan[0])
+        except Exception:
+            return
+    try:
+        await lynn.send_chat_action(message.chat.id, "typing")
+        await message.reply_text(pro)
+    except CFError:
+        return
+
+
+__help__ = """
+<b> Chatbot </b>
+layla AI 3.0 IS THE ONLY AI SYSTEM WHICH CAN DETECT & REPLY UPTO 200 LANGUAGES
+ - /chatbot [ON/OFF]: Enables and disables AI Chat mode (EXCLUSIVE)
+ - /chatbot EN : Enables English only chatbot
+ 
+"""
+
+__mod_name__ = "Chatbot"
